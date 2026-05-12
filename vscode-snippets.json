@@ -1,0 +1,130 @@
+{
+  "Theorem": {
+    "prefix": "thm",
+    "body": [
+      "#theorem[",
+      "\t$0",
+      "]"
+    ],
+    "description": "Numbered Theorem block",
+    "scope": "typst"
+  },
+  "Definition": {
+    "prefix": "defn",
+    "body": [
+      "#definition[",
+      "\t$0",
+      "]"
+    ],
+    "description": "Numbered Definition block",
+    "scope": "typst"
+  },
+  "Lemma": {
+    "prefix": "lem",
+    "body": [
+      "#lemma[",
+      "\t$0",
+      "]"
+    ],
+    "description": "Numbered Lemma block",
+    "scope": "typst"
+  },
+  "Corollary": {
+    "prefix": "cor",
+    "body": [
+      "#corollary[",
+      "\t$0",
+      "]"
+    ],
+    "description": "Numbered Corollary block",
+    "scope": "typst"
+  },
+  "Proof": {
+    "prefix": "pf",
+    "body": [
+      "#proof[",
+      "\t$0",
+      "]"
+    ],
+    "description": "Proof block with QED symbol",
+    "scope": "typst"
+  },
+  "Example": {
+    "prefix": "ex",
+    "body": [
+      "#example[",
+      "\t$0",
+      "]"
+    ],
+    "description": "Numbered Example block",
+    "scope": "typst"
+  },
+  "Remark": {
+    "prefix": "rem",
+    "body": [
+      "#remark[",
+      "\t$0",
+      "]"
+    ],
+    "description": "Numbered Remark block",
+    "scope": "typst"
+  },
+  "Problem": {
+    "prefix": "prob",
+    "body": [
+      "#problem[",
+      "\t$0",
+      "]"
+    ],
+    "description": "Numbered Problem block",
+    "scope": "typst"
+  },
+  "Solution": {
+    "prefix": "sol",
+    "body": [
+      "#solution[",
+      "\t$0",
+      "]"
+    ],
+    "description": "Solution block with QED symbol",
+    "scope": "typst"
+  },
+  "Exercise": {
+    "prefix": "exe",
+    "body": [
+      "#exercise[",
+      "\t$0",
+      "]"
+    ],
+    "description": "Numbered Exercise block",
+    "scope": "typst"
+  },
+  "Note": {
+    "prefix": "nt",
+    "body": [
+      "#note[",
+      "\t$0",
+      "]"
+    ],
+    "description": "Callout Note",
+    "scope": "typst"
+  },
+  "Todo": {
+    "prefix": "td",
+    "body": [
+      "#todo[",
+      "\t$0",
+      "]"
+    ],
+    "description": "Callout Todo",
+    "scope": "typst"
+  },
+  "Equation (Boxed)": {
+    "prefix": "beq",
+    "body": [
+      "#boxed($ $0 $)"
+    ],
+    "description": "Theme-aware boxed equation",
+    "scope": "typst"
+  }
+}

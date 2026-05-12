@@ -1,0 +1,11 @@
+[package]
+name = "phiamble"
+version = "0.1.0"
+entrypoint = "lib.typ"
+authors = ["philosolog"]
+license = "MIT"
+description = "My preamble and styling system for lecture notes and assignments."
+repository = "https://github.com/philosolog/phiamble"
+keywords = ["typst", "preamble", "math", "lecture-notes"]
+disciplines = ["mathematics", "computer-science"]
+compiler = "0.11.0"
