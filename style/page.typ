@@ -10,6 +10,97 @@
 // Import itemize for native enum referencing
 #import "@preview/itemize:0.2.0" as itemize
 
+/// Configures the visual styling of the document (colors, fonts, math styles, etc.)
+/// without applying page layout properties like margins or headers.
+/// Useful for snippets or embedding content in other documents.
+///
+/// - theme (string): Overrides the default theme ("github-light", "github-dark", or "gruvbox").
+/// - body (content): The content to style.
+#let setup_theme(
+	theme: auto,
+	body,
+) = {
+	let active_theme = resolve_theme(theme: theme)
+	theme_state.update(active_theme)
+	let colors = get_colors(active_theme)
+	set page(fill: colors.bg)
+
+	set text(
+		font: main_text_font,
+		size: 11pt,
+		fill: colors.text,
+		hyphenate: false,
+	)
+
+	// Paragraphs
+	set par(justify: false, leading: 0.65em)
+
+	// Headings
+	set heading(numbering: "1.1")
+	show heading: it => {
+		set text(fill: colors.text, weight: "semibold")
+		block(above: 1.5em, below: 0.7em, it)
+	}
+
+	show heading.where(level: 1): it => {
+		set text(size: 15pt, weight: "semibold", fill: colors.text)
+		block(above: 1.8em, below: 0.85em)[#it.body]
+	}
+
+	show heading.where(level: 2): it => {
+		set text(size: 12pt, weight: "semibold", fill: colors.text)
+		block(above: 1.3em, below: 0.5em)[#it.body]
+	}
+
+	// Math styling
+	set math.equation(numbering: "(1)")
+	show math.equation: set text(font: main_math_font, fill: colors.text)
+
+	// Links — Blue underlined
+	show link: it => {
+		set text(fill: colors.text)
+		underline(it)
+	}
+
+	// Apply itemize rule to enable native list references
+	show: itemize.config.ref.with(supplement: none)
+	show: itemize.default-enum-list
+
+
+	// Figures (Environments) — Left aligned
+	show figure: set align(left)
+
+	// Apply diagram theme for Lilaq diagrams
+	show: phiamble_diagram_theme
+
+	// Code blocks
+	show raw.where(block: true): it => {
+		block(
+			fill: colors.bg_alt,
+			stroke: 1pt + colors.text_muted.transparentize(70%),
+			inset: 12pt,
+			radius: 4pt,
+			width: 100%,
+			it,
+		)
+	}
+
+	show raw.where(block: false): it => {
+		box(
+			fill: colors.bg_alt,
+			inset: (x: 3pt, y: 0pt),
+			outset: (y: 3pt),
+			radius: 2pt,
+			it,
+		)
+	}
+
+	// Strong/emphasis
+	show strong: set text(fill: colors.text, weight: "bold")
+
+	body
+}
+
 /// Configures the document-level styling, page layout, and preamble state.
 ///
 /// - title (content): The document title.
@@ -44,7 +135,6 @@
 	let active_prob_start = if requested_prob_start < 1 { 1 } else {
 		requested_prob_start
 	}
-	theme_state.update(active_theme)
 	render_mode_state.update(render_mode)
 	reset_counters(start: first)
 	problem_counter.update(active_prob_start - 1)
@@ -113,79 +203,7 @@
 
 	set page(..page_args)
 
-	set text(
-		font: main_text_font,
-		size: 11pt,
-		fill: colors.text,
-		hyphenate: false,
-	)
-
-	// Paragraphs
-	set par(justify: false, leading: 0.65em)
-
-	// Headings
-	set heading(numbering: "1.1")
-	show heading: it => {
-		set text(fill: colors.text, weight: "semibold")
-		block(above: 1.5em, below: 0.7em, it)
-	}
-
-	show heading.where(level: 1): it => {
-		set text(size: 15pt, weight: "semibold", fill: colors.text)
-		block(above: 1.8em, below: 0.85em)[#it.body]
-	}
-
-	show heading.where(level: 2): it => {
-		set text(size: 12pt, weight: "semibold", fill: colors.text)
-		block(above: 1.3em, below: 0.5em)[#it.body]
-	}
-
-	// Math styling
-
-	set math.equation(numbering: "(1)")
-	show math.equation: set text(font: main_math_font, fill: colors.text)
-
-	// Links — Blue underlined
-	show link: it => {
-		set text(fill: colors.text)
-		underline(it)
-	}
-
-	// Apply itemize rule to enable native list references
-	show: itemize.config.ref.with(supplement: none)
-	show: itemize.default-enum-list
-
-
-	// Figures (Environments) — Left aligned
-	show figure: set align(left)
-
-	// Apply diagram theme for Lilaq diagrams
-	show: phiamble_diagram_theme
-
-	// Code blocks
-	show raw.where(block: true): it => {
-		block(
-			fill: colors.bg_alt,
-			stroke: 1pt + colors.text_muted.transparentize(70%),
-			inset: 12pt,
-			radius: 4pt,
-			width: 100%,
-			it,
-		)
-	}
-
-	show raw.where(block: false): it => {
-		box(
-			fill: colors.bg_alt,
-			inset: (x: 3pt, y: 0pt),
-			outset: (y: 3pt),
-			radius: 2pt,
-			it,
-		)
-	}
-
-	// Strong/emphasis
-	show strong: set text(fill: colors.text, weight: "bold")
+	show: setup_theme.with(theme: active_theme)
 
 	// ─── TITLE BLOCK — Official centered header ───
 	if title != none {
