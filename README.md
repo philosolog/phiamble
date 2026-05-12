@@ -1,6 +1,4 @@
-# phiamble: Academic Typst Preamble
-
-**phiamble** is a modular, high-performance preamble system for Typst, designed for academic lecture notes, assignments, and mathematical documents. It features a themeable design, robust block machinery for theorems and problems, and a comprehensive collection of mathematical shorthands.
+# phiamble, my (Typst) preamble
 
 ## Usage
 
