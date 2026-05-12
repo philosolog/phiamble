@@ -62,6 +62,11 @@
 /// "Such that" text with spacing.
 #let st = $"s.t."$
 
+/// Implications
+#let iff = $arrow.l.r.double.long$
+#let implies = $arrow.r.double.long$
+#let impliedby = $arrow.l.double.long$
+
 // --- Braces & Delimiters (auto-scaling) ---
 
 // Set builder notation: Set(x ; condition)
