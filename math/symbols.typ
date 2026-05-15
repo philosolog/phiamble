@@ -59,6 +59,9 @@
 }
 
 // --- Logic & Set Theory ---
+/// Mapping
+#let to = $->$
+
 /// "Such that" text with spacing.
 #let st = $"s.t."$
 
