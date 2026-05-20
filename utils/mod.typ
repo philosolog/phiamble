@@ -59,7 +59,12 @@
 	v(8pt)
 }
 
+/// Runs `body` with a theme-aware stroke for table rules.
+#let with_table_rule_stroke(body) = context {
+	let colors = get_colors(theme_state.get())
+	body(0.5pt + colors.text_muted.transparentize(35%))
+}
+
 /// Reference an enum item by label string.
 /// Enables native @-label support by aliasing to standard ref.
 #let eref(name) = ref(label(name))
-
