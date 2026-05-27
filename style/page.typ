@@ -110,6 +110,7 @@
 /// - course (content): The course name/ID for the header.
 /// - theme (string): Overrides the default theme ("github-light", "github-dark", or "gruvbox").
 /// - render_mode (string): Either "paged" (default) or "html" (skips headers/footers).
+/// - running_header (bool): Whether paged output includes the running header.
 /// - start (int): The starting number for headings and counters.
 /// - prob_start (int): The starting number for the problem counter (defaults to `start`).
 #let setup_page(
@@ -124,6 +125,7 @@
 	institution: none,
 	theme: auto,
 	render_mode: "paged",
+	running_header: true,
 	start: 1,
 	prob_start: auto,
 	body,
@@ -171,28 +173,32 @@
 			margin: (x: 1in, y: 1in),
 			fill: colors.bg,
 			background: page_background,
-			header: context {
-				let show_running_header = counter(page).get().first() > 1
-				let header_text_fill = if show_running_header {
-					colors.text_muted
-				} else {
-					colors.text_muted.transparentize(100%)
-				}
-				let header_rule = if show_running_header {
-					0.5pt + colors.text_muted.transparentize(50%)
-				} else {
-					0.5pt + colors.text_muted.transparentize(100%)
-				}
+			header: if running_header {
+				context {
+					let show_running_header = counter(page).get().first() > 1
+					let header_text_fill = if show_running_header {
+						colors.text_muted
+					} else {
+						colors.text_muted.transparentize(100%)
+					}
+					let header_rule = if show_running_header {
+						0.5pt + colors.text_muted.transparentize(50%)
+					} else {
+						0.5pt + colors.text_muted.transparentize(100%)
+					}
 
-				set text(fill: header_text_fill, size: 9pt)
-				grid(
-					columns: (1fr, 1fr),
-					align: (left, right),
-					smallcaps(if course != none { course } else { "" }),
-					smallcaps(if title != none { title } else { "" }),
-				)
-				v(-8pt)
-				line(length: 100%, stroke: header_rule)
+					set text(fill: header_text_fill, size: 9pt)
+					grid(
+						columns: (1fr, 1fr),
+						align: (left, right),
+						smallcaps(if course != none { course } else { "" }),
+						smallcaps(if title != none { title } else { "" }),
+					)
+					v(-8pt)
+					line(length: 100%, stroke: header_rule)
+				}
+			} else {
+				none
 			},
 			footer: context {
 				set text(fill: colors.text_muted, size: 9pt)
