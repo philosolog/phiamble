@@ -111,6 +111,8 @@
 /// - theme (string): Overrides the default theme ("github-light", "github-dark", or "gruvbox").
 /// - render_mode (string): Either "paged" (default) or "html" (skips headers/footers).
 /// - running_header (bool): Whether paged output includes the running header.
+/// - show_title_block (bool): Whether to render the default title/metadata block.
+/// - show_first_page_footer (bool): Whether the page number appears on the first page.
 /// - start (int): The starting number for headings and counters.
 /// - prob_start (int): The starting number for the problem counter (defaults to `start`).
 #let setup_page(
@@ -126,6 +128,8 @@
 	theme: auto,
 	render_mode: "paged",
 	running_header: true,
+	show_title_block: true,
+	show_first_page_footer: true,
 	start: 1,
 	prob_start: auto,
 	body,
@@ -201,7 +205,12 @@
 				none
 			},
 			footer: context {
-				set text(fill: colors.text_muted, size: 9pt)
+				let footer_fill = if show_first_page_footer or counter(page).get().first() > 1 {
+					colors.text_muted
+				} else {
+					colors.text_muted.transparentize(100%)
+				}
+				set text(fill: footer_fill, size: 9pt)
 				align(center)[#counter(page).display()]
 			},
 		)
@@ -212,7 +221,7 @@
 	show: setup_theme.with(theme: active_theme)
 
 	// ─── TITLE BLOCK — Official centered header ───
-	if title != none {
+	if show_title_block and title != none {
 		align(left)[
 			#block(
 				inset: (top: 6pt, bottom: 20pt),

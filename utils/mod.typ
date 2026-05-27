@@ -33,6 +33,15 @@
 
 // --- Layout Utilities ---
 
+/// Renders an unnumbered front-matter heading included only in PDF bookmarks.
+#let front_matter_heading(title, level: 1) = heading(
+	level: level,
+	numbering: none,
+	outlined: false,
+	bookmarked: true,
+	title,
+)
+
 /// Placeholder block for hidden draft content. Use `visible: true` to render body.
 #let wip(body, visible: false) = context {
 	if visible {
