@@ -14,6 +14,9 @@
 	}
 ]
 
+/// Renders an underbrace with a non-wrapping, zero-width annotation label.
+#let underbrace(eq, label) = math.underbrace(eq, brace_label(label))
+
 /// Inline math box with theme-aware stroke.
 #let boxed(eq) = context {
 	let colors = get_colors(theme_state.get())

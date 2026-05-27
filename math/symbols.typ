@@ -64,6 +64,8 @@
 
 /// "Such that" text with spacing.
 #let st = $"s.t."$
+/// "With respect to" text with spacing.
+#let wrt = $"w.r.t."$
 
 /// Implications
 #let iff = $arrow.l.r.double.long$
