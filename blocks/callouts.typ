@@ -186,5 +186,7 @@ with_local_equations,
 
 /// Note callout block.
 #let note = make_callout_environment("note", "Note", "note", "note_fill")
+/// Recall callout block.
+#let recall = make_callout_environment("recall", "Recall", "recall", "recall_fill")
 /// `TODO` callout block.
 #let todo = make_callout_environment("todo", "TODO", "todo", "todo_fill")

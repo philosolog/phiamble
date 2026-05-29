@@ -5,17 +5,43 @@
 
 // --- Equation Utilities ---
 
-/// Renders a zero-width box for annotations, ensuring spaces are non-breaking.
-#let brace_label(s) = box(width: 0pt)[
-	#if type(s) == str {
+/// Renders an annotation label, ensuring spaces are non-breaking.
+#let brace_label(s, width: 0pt) = {
+	let label = if type(s) == str {
 		text(s.replace(" ", "\u{A0}"))
 	} else {
 		s
 	}
-]
 
-/// Renders an underbrace with a non-wrapping, zero-width annotation label.
-#let underbrace(eq, label) = math.underbrace(eq, brace_label(label))
+	if width == auto {
+		label
+	} else {
+		box(width: width, label)
+	}
+}
+
+/// Renders an underbrace with a non-wrapping annotation label.
+#let underbrace(eq, label, note: none, label_width: 0pt) = {
+	let annotation = if note == none {
+		label
+	} else {
+		let note_content = if type(note) == str {
+			text(note.replace(" ", "\u{A0}"))
+		} else {
+			note
+		}
+
+		stack(
+			dir: ttb,
+			spacing: 0pt,
+			align: center,
+			[#label],
+			note_content,
+		)
+	}
+
+	math.underbrace(eq, brace_label(annotation, width: label_width))
+}
 
 /// Inline math box with theme-aware stroke.
 #let boxed(eq) = context {

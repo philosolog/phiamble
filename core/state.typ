@@ -59,7 +59,7 @@
 	}
 	counter(heading).update(first - 1)
 	// Reset serial reference counters
-	for kind in ("solution", "proof", "note", "todo", "warning", "exercise") {
+	for kind in ("solution", "proof", "note", "recall", "todo", "warning", "exercise") {
 		counter(kind + "-ref-serial").update(0)
 	}
 }

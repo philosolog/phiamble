@@ -23,6 +23,8 @@
 	example_fill: rgb("#dafbe1"),
 	note: rgb("#0969da"),
 	note_fill: rgb("#ddf4ff"),
+	recall: rgb("#8250df"),
+	recall_fill: rgb("#fbefff"),
 	remark: rgb("#8250df"),
 	remark_fill: rgb("#fbefff"),
 	warning: rgb("#9a6700"),
@@ -59,6 +61,8 @@
 	example_fill: rgb("#2ea04326"),
 	note: rgb("#4493f8"),
 	note_fill: rgb("#388bfd1a"),
+	recall: rgb("#ab7df8"),
+	recall_fill: rgb("#ab7df826"),
 	remark: rgb("#ab7df8"),
 	remark_fill: rgb("#ab7df826"),
 	warning: rgb("#d29922"),
@@ -95,6 +99,8 @@
 	example_fill: rgb("#343416"),
 	note: rgb("#fabd2f"),
 	note_fill: rgb("#3e3216"),
+	recall: rgb("#d3869b"),
+	recall_fill: rgb("#3b2630"),
 	remark: rgb("#d3869b"),
 	remark_fill: rgb("#3b2630"),
 	warning: rgb("#fb4934"),
@@ -134,5 +140,4 @@
 
 #let is_dark_theme(theme) = get_preset(theme).is_dark
 #let get_colors(theme) = get_preset(theme).palette
-
 

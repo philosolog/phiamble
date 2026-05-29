@@ -109,6 +109,16 @@
     "description": "Callout Note",
     "scope": "typst"
   },
+  "Recall": {
+    "prefix": "rec",
+    "body": [
+      "#recall[",
+      "\t$0",
+      "]"
+    ],
+    "description": "Callout Recall",
+    "scope": "typst"
+  },
   "Todo": {
     "prefix": "td",
     "body": [

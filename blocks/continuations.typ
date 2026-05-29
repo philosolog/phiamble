@@ -4,7 +4,7 @@
 	axiom, corollary, definition, example, fact, lemma, proposition, remark,
 	theorem,
 )
-#import "callouts.typ": note, proof, todo, warning
+#import "callouts.typ": note, proof, recall, todo, warning
 #import "assignment.typ": exercise, problem, solution
 
 #let theorem_continue = make_continue_environment(theorem)
@@ -22,4 +22,5 @@
 #let solution_continue = make_continue_environment(solution)
 #let exercise_continue = make_continue_environment(exercise)
 #let note_continue = make_continue_environment(note)
+#let recall_continue = make_continue_environment(recall)
 #let todo_continue = make_continue_environment(todo)
