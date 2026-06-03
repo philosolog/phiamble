@@ -208,168 +208,163 @@ with_local_equations,
 	of: none,
 ) = {
 	if not continued and num == none { exercise_counter.step() }
-	figure(
-		context {
-			let colors = get_colors(theme_state.get())
-			let prior_ref = resolve_block_ref(
-				"exercise",
-				of: of,
-				continued: continued,
+	context {
+		let colors = get_colors(theme_state.get())
+		let prior_ref = resolve_block_ref(
+			"exercise",
+			of: of,
+			continued: continued,
+		)
+		if continued and prior_ref == none {
+			panic(
+				"exercise_continue requires a prior exercise marked `continuing: true` or explicit `of:` reference",
 			)
-			if continued and prior_ref == none {
-				panic(
-					"exercise_continue requires a prior exercise marked `continuing: true` or explicit `of:` reference",
-				)
-			}
+		}
 
-			if continued {
-				let scope_id = prior_ref.at("scope")
-				let display_num = prior_ref.at("number")
-				let display_name = if name != none { name } else {
-					prior_ref.at("name", default: none)
+		if continued {
+			let scope_id = prior_ref.at("scope")
+			let display_num = prior_ref.at("number")
+			let display_name = if name != none { name } else {
+				prior_ref.at("name", default: none)
+			}
+			let active_ref = prior_ref
+			local_equation_scope.update(scope_id)
+
+			[
+				#store_block_ref(active_ref)
+				#environment_box(
+					title: "Exercise",
+					name: display_name,
+					number: display_num,
+					color: colors.exercise,
+					fill: colors.exercise_fill,
+					header_mode: "stack",
+					continuation: continuation,
+					continued: true,
+					continuing: continuing,
+					breakable: breakable,
+					with_local_equations(
+						body,
+						scope: scope_id,
+						continued: true,
+						ref_key: active_ref.at("key"),
+					),
+				)
+			]
+		} else {
+			if section != none {
+				// Section-based numbering using per-section counter (content-based)
+				let sec_counter = counter("exercise_sec_" + str(section))
+				let serial = str(sec_counter.get().first())
+				let scope_id = str(section) + "." + serial
+				let display_num = [#scope_id]
+				let active_ref = if ref != none {
+					block_ref(
+						"exercise",
+						name: if ref.at("name", default: none) != none {
+							ref.at("name")
+						} else { name },
+						number: display_num,
+						scope: scope_id,
+						key: if ref.at("key", default: none) != none {
+							ref.at("key")
+						} else { "exercise-ref-" + scope_id },
+					)
+				} else if continuing {
+					block_ref(
+						"exercise",
+						name: name,
+						number: display_num,
+						scope: scope_id,
+						key: "exercise-ref-" + scope_id,
+					)
+				} else {
+					none
 				}
-				let active_ref = prior_ref
 				local_equation_scope.update(scope_id)
 
 				[
-					#store_block_ref(active_ref)
+					#if section != none {
+						counter("exercise_sec_" + str(section)).step()
+					}
+					#if active_ref != none {
+						store_block_ref(active_ref)
+					}
 					#environment_box(
 						title: "Exercise",
-						name: display_name,
+						name: name,
 						number: display_num,
 						color: colors.exercise,
 						fill: colors.exercise_fill,
 						header_mode: "stack",
 						continuation: continuation,
-						continued: true,
 						continuing: continuing,
 						breakable: breakable,
 						with_local_equations(
 							body,
 							scope: scope_id,
-							continued: true,
-							ref_key: active_ref.at("key"),
+							ref_key: if active_ref != none { active_ref.at("key") } else {
+								none
+							},
 						),
 					)
 				]
 			} else {
-				if section != none {
-					// Section-based numbering using per-section counter (content-based)
-					let sec_counter = counter("exercise_sec_" + str(section))
-					let serial = str(sec_counter.get().first())
-					let scope_id = str(section) + "." + serial
-					let display_num = [#scope_id]
-					let active_ref = if ref != none {
-						block_ref(
-							"exercise",
-							name: if ref.at("name", default: none) != none {
-								ref.at("name")
-							} else { name },
-							number: display_num,
-							scope: scope_id,
-							key: if ref.at("key", default: none) != none {
-								ref.at("key")
-							} else { "exercise-ref-" + scope_id },
-						)
-					} else if continuing {
-						block_ref(
-							"exercise",
-							name: name,
-							number: display_num,
-							scope: scope_id,
-							key: "exercise-ref-" + scope_id,
-						)
-					} else {
-						none
-					}
-					local_equation_scope.update(scope_id)
-
-					[
-						#if section != none {
-							counter("exercise_sec_" + str(section)).step()
-						}
-						#if active_ref != none {
-							store_block_ref(active_ref)
-						}
-						#environment_box(
-							title: "Exercise",
-							name: name,
-							number: display_num,
-							color: colors.exercise,
-							fill: colors.exercise_fill,
-							header_mode: "stack",
-							continuation: continuation,
-							continuing: continuing,
-							breakable: breakable,
-							with_local_equations(
-								body,
-								scope: scope_id,
-								ref_key: if active_ref != none { active_ref.at("key") } else {
-									none
-								},
-							),
-						)
-					]
+				// String-based numbering (manual or auto)
+				let display_num = if num != none {
+					if type(num) == str { num } else { str(num) }
 				} else {
-					// String-based numbering (manual or auto)
-					let display_num = if num != none {
-						if type(num) == str { num } else { str(num) }
-					} else {
-						exercise_counter.display("1")
-					}
-					let active_ref = if ref != none {
-						block_ref(
-							"exercise",
-							name: if ref.at("name", default: none) != none {
-								ref.at("name")
-							} else { name },
-							number: display_num,
-							scope: display_num,
-							key: if ref.at("key", default: none) != none {
-								ref.at("key")
-							} else { "exercise-ref-" + display_num },
-						)
-					} else if continuing {
-						block_ref(
-							"exercise",
-							name: name,
-							number: display_num,
-							scope: display_num,
-							key: "exercise-ref-" + display_num,
-						)
-					} else {
-						none
-					}
-					local_equation_scope.update(display_num)
-
-					[
-						#if active_ref != none {
-							store_block_ref(active_ref)
-						}
-						#environment_box(
-							title: "Exercise",
-							name: name,
-							number: display_num,
-							color: colors.exercise,
-							fill: colors.exercise_fill,
-							header_mode: "stack",
-							continuation: continuation,
-							continuing: continuing,
-							breakable: breakable,
-							with_local_equations(
-								body,
-								scope: display_num,
-								ref_key: if active_ref != none { active_ref.at("key") } else {
-									none
-								},
-							),
-						)
-					]
+					exercise_counter.display("1")
 				}
+				let active_ref = if ref != none {
+					block_ref(
+						"exercise",
+						name: if ref.at("name", default: none) != none {
+							ref.at("name")
+						} else { name },
+						number: display_num,
+						scope: display_num,
+						key: if ref.at("key", default: none) != none {
+							ref.at("key")
+						} else { "exercise-ref-" + display_num },
+					)
+				} else if continuing {
+					block_ref(
+						"exercise",
+						name: name,
+						number: display_num,
+						scope: display_num,
+						key: "exercise-ref-" + display_num,
+					)
+				} else {
+					none
+				}
+				local_equation_scope.update(display_num)
+
+				[
+					#if active_ref != none {
+						store_block_ref(active_ref)
+					}
+					#environment_box(
+						title: "Exercise",
+						name: name,
+						number: display_num,
+						color: colors.exercise,
+						fill: colors.exercise_fill,
+						header_mode: "stack",
+						continuation: continuation,
+						continuing: continuing,
+						breakable: breakable,
+						with_local_equations(
+							body,
+							scope: display_num,
+							ref_key: if active_ref != none { active_ref.at("key") } else {
+								none
+							},
+						),
+					)
+				]
 			}
-		},
-		kind: "exercise",
-		supplement: "Exercise",
-		numbering: if num != none { _ => str(num) } else { "1" },
-	)
+		}
+	}
 }
