@@ -103,6 +103,36 @@
 	body(0.5pt + colors.text_muted.transparentize(35%))
 }
 
+/// Table with math-matrix row syntax.
+/// Use inside math: `$ tbl(a, b; c, d) $`.
+#let tbl(..args) = {
+	let raw = args.pos()
+	let rows = if raw.len() > 0 and type(raw.first()) == array {
+		raw
+	} else {
+		(raw,)
+	}
+	let as_math(cell) = $#cell$
+	let column_count = 0
+	for row in rows {
+		if row.len() > column_count {
+			column_count = row.len()
+		}
+	}
+
+	let cells = ()
+	for row in rows {
+		for cell in row {
+			cells.push(as_math(cell))
+		}
+		for _ in range(row.len(), column_count) {
+			cells.push([])
+		}
+	}
+
+	table(columns: column_count, ..cells)
+}
+
 /// Reference an enum item by label string.
 /// Enables native @-label support by aliasing to standard ref.
 #let eref(name) = ref(label(name))

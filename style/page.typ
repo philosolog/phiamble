@@ -35,6 +35,20 @@
 	// Paragraphs
 	set par(justify: false, leading: 0.65em)
 
+	// Tables
+	let table_rule = 0.5pt + colors.text_muted.transparentize(35%)
+	set table(
+		align: center,
+		inset: (x: 6pt, y: 4pt),
+		stroke: (x, y) => (
+			left: if x > 0 { table_rule } else { none },
+			top: if y == 1 { table_rule } else { none },
+			right: none,
+			bottom: none,
+		),
+	)
+	show table: it => align(center)[#it]
+
 	// Headings
 	set heading(numbering: "1.1")
 	show heading: it => {
