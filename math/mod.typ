@@ -1,3 +1,4 @@
+#import "algebra.typ" as algebra
 #import "probability.typ" as prob
 #import "analysis.typ" as analysis
 #import "calculus.typ" as calculus
