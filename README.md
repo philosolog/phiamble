@@ -1,3 +1,5 @@
-# phiamble
+# φamble
 
-AI was shit at summarizing my README in a way I liked... I'll write one.. later... :tm:
+My personal preamble, currently written in Typst. Currently used in a few of my public/private repos wherever I run a Typst binary.
+
+Documentation for $`\neg`$me will be up when necessary.
