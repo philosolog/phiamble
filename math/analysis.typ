@@ -3,6 +3,13 @@
 
 // --- Analysis ---
 
+// Landau presets, following dccsillag/moremath.typ.
+#let oh = $cal(o)$
+#let Oh = $cal(O)$
+#let ohmega = sym.omega
+#let Ohmega = sym.Omega
+#let Thetah = sym.Theta
+
 /// Limit with explicit lower/upper attachments: `inlim($n -> oo$)`.
 #let inlim(under, over: none) = math.attach(
 	math.limits(math.op("lim")),

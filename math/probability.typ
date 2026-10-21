@@ -46,3 +46,8 @@
 #let to_as = $arrow.r^("a.s.")$
 /// L^p convergence arrow: `to_lp(2)`.
 #let to_lp(p) = $arrow.r^(L^#p)$
+/// Independence with a negated variant; Typst has no negated double tack.
+#let indep = symbol(
+	str(sym.tack.tt),
+	("not", str(sym.tack.tt) + "\u{0338}"),
+)

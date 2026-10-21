@@ -10,11 +10,11 @@
 
 
 /// Short epsilon alias.
-#let eps = $epsilon$
+#let eps = sym.epsilon
 /// Alternate phi glyph.
-#let vphi = $phi.alt$
+#let vphi = sym.phi.alt
 /// Alternate epsilon glyph.
-#let veps = $epsilon.alt$
+#let veps = sym.epsilon.alt
 /// Upright bold letter for matrices/vectors, e.g. `ub(P)`.
 #let ub(letter) = math.upright(math.bold(letter))
 /// Distance operator.
@@ -60,7 +60,7 @@
 
 // --- Logic & Set Theory ---
 /// Mapping
-#let to = $->$
+#let to = sym.arrow.r
 
 /// "Such that" text with spacing.
 #let st = $"s.t."$
@@ -68,9 +68,38 @@
 #let wrt = $"w.r.t."$
 
 /// Implications
-#let iff = $arrow.l.r.double.long$
-#let implies = $arrow.r.double.long$
-#let impliedby = $arrow.l.double.long$
+#let iff = sym.arrow.l.r.double.long
+#let implies = sym.arrow.r.double.long
+#let impliedby = sym.arrow.l.double.long
+
+// --- Calligraphic Letters ---
+// Explicit names avoid shadowing built-ins such as bb, dd, and oo.
+#let calA = $cal(A)$
+#let calB = $cal(B)$
+#let calC = $cal(C)$
+#let calD = $cal(D)$
+#let calE = $cal(E)$
+#let calF = $cal(F)$
+#let calG = $cal(G)$
+#let calH = $cal(H)$
+#let calI = $cal(I)$
+#let calJ = $cal(J)$
+#let calK = $cal(K)$
+#let calL = $cal(L)$
+#let calM = $cal(M)$
+#let calN = $cal(N)$
+#let calO = $cal(O)$
+#let calP = $cal(P)$
+#let calQ = $cal(Q)$
+#let calR = $cal(R)$
+#let calS = $cal(S)$
+#let calT = $cal(T)$
+#let calU = $cal(U)$
+#let calV = $cal(V)$
+#let calW = $cal(W)$
+#let calX = $cal(X)$
+#let calY = $cal(Y)$
+#let calZ = $cal(Z)$
 
 // --- Braces & Delimiters (auto-scaling) ---
 
