@@ -4,8 +4,9 @@
 	reset_counters, theme_state,
 )
 #import "../core/state.typ": problem_counter
-#import "../core/colors.typ": get_colors, resolve_theme
+#import "../core/colors.typ": get_colors, resolve_theme, is_academic_theme
 #import "lilaq.typ": phiamble_diagram_theme
+#import "dates.typ": format_date
 
 // Import itemize for native enum referencing
 #import "@preview/itemize:0.2.0" as itemize
@@ -29,11 +30,14 @@
 		font: main_text_font,
 		size: 11pt,
 		fill: colors.text,
-		hyphenate: false,
+		hyphenate: is_academic_theme(active_theme),
 	)
 
 	// Paragraphs
-	set par(justify: false, leading: 0.65em)
+	set par(
+		justify: is_academic_theme(active_theme),
+		leading: if is_academic_theme(active_theme) { 0.45em } else { 0.65em },
+	)
 
 	// Tables
 	let table_rule = 0.5pt + colors.text_muted.transparentize(35%)
@@ -120,7 +124,8 @@
 /// - title (content): The document title.
 /// - subtitle (content): A secondary title or description.
 /// - author (content): The author(s) of the document.
-/// - date (content): The document date.
+/// - date (datetime/dictionary): Date-only datetime or explicit zoned record; see README.
+/// - due (datetime/dictionary): Deadline using the same structured format as date.
 /// - course (content): The course name/ID for the header.
 /// - theme (string): Overrides the default theme ("github-light", "github-dark", or "gruvbox").
 /// - render_mode (string): Either "paged" (default) or "html" (skips headers/footers).
@@ -149,6 +154,8 @@
 	body,
 ) = {
 	// Initialize state and reset all counters
+	let due = format_date(due, field: "due")
+	let date = format_date(date, field: "date")
 	let active_theme = resolve_theme(theme: theme)
 	let first = if start < 1 { 1 } else { start }
 	let requested_prob_start = if prob_start == auto { first } else { prob_start }
@@ -208,9 +215,14 @@
 					set text(fill: header_text_fill, size: 9pt)
 					grid(
 						columns: (1fr, 1fr),
+						column-gutter: 12pt,
 						align: (left, right),
-						smallcaps(if course != none { course } else { "" }),
-						smallcaps(if title != none { title } else { "" }),
+						if is_academic_theme(active_theme) {
+							if author != none { author } else if course != none { course } else { "" }
+						} else { smallcaps(if course != none { course } else { "" }) },
+						if is_academic_theme(active_theme) {
+							(course, title).filter(x => x != none).join([ — ])
+						} else { smallcaps(if title != none { title } else { "" }) },
 					)
 					v(-8pt)
 					line(length: 100%, stroke: header_rule)
@@ -235,7 +247,30 @@
 	show: setup_theme.with(theme: active_theme)
 
 	// ─── TITLE BLOCK — Official centered header ───
-	if show_title_block and title != none {
+	if show_title_block and title != none and is_academic_theme(active_theme) {
+		block(width: 100%, breakable: false, below: 1.2em)[
+			#align(center)[
+				#set par(leading: 0.6em)
+				#if course != none { text(size: 12pt, course); linebreak() }
+				#text(size: 14pt, weight: "bold", title)
+				#if subtitle != none { linebreak(); text(size: 11pt, style: "italic", subtitle) }
+			]
+			#v(0.6em)
+			#grid(
+				columns: (1fr, 1fr), column-gutter: 16pt, align: (left, right),
+				if author != none { author } else { [] },
+				if due != none { [Due: #due] } else if date != none { date } else { [] },
+			)
+			#let extra = (if instructor != none { [Instructor: #instructor] }, institution, term,
+				if due != none and date != none { [Date: #date] }).filter(x => x != none)
+			#if extra.len() > 0 {
+				v(0.3em)
+				align(center, text(size: 10pt, extra.join(h(1em))))
+			}
+			#v(0.4em)
+			#line(length: 100%, stroke: 0.5pt + black)
+		]
+	} else if show_title_block and title != none {
 		align(left)[
 			#block(
 				inset: (top: 6pt, bottom: 20pt),

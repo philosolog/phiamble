@@ -16,6 +16,7 @@
 #import "style/lilaq.typ": *
 #import "style/fletcher.typ" as fletcher
 #import "style/page.typ": setup_page, setup_theme
+#import "style/dates.typ": deadline
 
 // --- Blocks ---
 #import "blocks/base.typ": *

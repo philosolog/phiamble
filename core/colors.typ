@@ -116,9 +116,17 @@
 	exercise_fill: rgb("#352414"),
 )
 
+// Derive every semantic role, so new palette keys remain monochrome too.
+#let academic_colors = light_colors.pairs().map(((key, value)) => (
+	key, if key in ("bg", "bg_alt") or key.ends-with("_fill") { white } else { black },
+)).to-dict()
+
+#let is_academic_theme(theme) = theme == "academic"
+
 #let resolve_theme(theme: "github-light") = if theme in (auto, none) { "github-light" } else { theme }
 
 #let theme_presets = (
+	"academic": (palette: academic_colors, is_dark: false),
 	"light": (palette: light_colors, is_dark: false),
 	"dark": (palette: dark_colors, is_dark: true),
 	"gruvbox-dark": (palette: gruvbox_dark_colors, is_dark: true),

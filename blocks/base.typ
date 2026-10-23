@@ -1,6 +1,6 @@
 // Core block and environment machinery for the phiamble package.
 #import "../core/state.typ": continued_block_refs, main_text_font, theme_state
-#import "../core/colors.typ": get_colors, is_dark_theme
+#import "../core/colors.typ": get_colors, is_dark_theme, is_academic_theme
 
 // --- Component Constructors ---
 
@@ -271,7 +271,32 @@
 		body
 	}
 
-	if variant == "plain" {
+	if is_academic_theme(active_theme) {
+		// Semantic structure without panels, duplicate numbers, or connector rules.
+		let is_answer = title in ("Proof", "Solution")
+		block(
+			width: 100%, breakable: breakable,
+			above: if is_answer { 0.65em } else { 1.2em }, below: 0.65em,
+		)[
+			#let label = {
+				set text(fill: black, weight: if is_answer { "regular" } else { "bold" },
+					style: if is_answer { "italic" } else { "normal" })
+				title
+				if number != none { [ #number] }
+				if note != none { [ #note] }
+				if continued { [ (continued)] }
+				[.]
+			}
+			#if title in ("Problem", "Exercise") {
+				block(below: 0.4em, sticky: true, label)
+				rendered_body
+			} else {
+				label
+				h(0.4em)
+				rendered_body
+			}
+		]
+	} else if variant == "plain" {
 		block(
 			width: 100%,
 			above: if link_state == "single" or link_state == "start" {
