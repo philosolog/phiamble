@@ -26,6 +26,8 @@
 } else {
 	$EE lr([#random-var mid(|) #given])$
 }
+/// Expectation alias compatible with Typst math mode.
+#let Exp = E
 /// Indicator of an event/set: `ind($A$)`.
 #let ind(event) = $upright(bold(1))_(#event)$
 /// Variance operator.
