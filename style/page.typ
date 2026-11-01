@@ -28,7 +28,7 @@
 
 	set text(
 		font: main_text_font,
-		size: 11pt,
+		size: if is_academic_theme(active_theme) { 10pt } else { 11pt },
 		fill: colors.text,
 		hyphenate: is_academic_theme(active_theme),
 	)
@@ -36,7 +36,7 @@
 	// Paragraphs
 	set par(
 		justify: is_academic_theme(active_theme),
-		leading: if is_academic_theme(active_theme) { 0.45em } else { 0.65em },
+		leading: if is_academic_theme(active_theme) { 0.2em } else { 0.65em },
 	)
 
 	// Tables
@@ -218,10 +218,12 @@
 						column-gutter: 12pt,
 						align: (left, right),
 						if is_academic_theme(active_theme) {
-							if author != none { author } else if course != none { course } else { "" }
+							if course != none { course } else { "" }
 						} else { smallcaps(if course != none { course } else { "" }) },
 						if is_academic_theme(active_theme) {
-							(course, title).filter(x => x != none).join([ — ])
+							if type(title) == str {
+								title.replace(regex("\\s+Solutions$"), "")
+							} else if title != none { title } else { "" }
 						} else { smallcaps(if title != none { title } else { "" }) },
 					)
 					v(-8pt)
@@ -248,18 +250,17 @@
 
 	// ─── TITLE BLOCK — Official centered header ───
 	if show_title_block and title != none and is_academic_theme(active_theme) {
-		block(width: 100%, breakable: false, below: 1.2em)[
-			#align(center)[
-				#set par(leading: 0.6em)
-				#if course != none { text(size: 12pt, course); linebreak() }
-				#text(size: 14pt, weight: "bold", title)
-				#if subtitle != none { linebreak(); text(size: 11pt, style: "italic", subtitle) }
+		block(width: 100%, breakable: false, below: 1.2em,
+			stroke: 0.5pt + black, inset: (x: 10pt, y: 6pt))[
+			#if course != none { text(size: 10pt, weight: "bold", course) }
+			#block(width: 100%, above: 0.6em, below: 0.6em)[
+				#align(center, text(size: 14.4pt, title))
+				#if subtitle != none { align(center, text(size: 11pt, style: "italic", subtitle)) }
 			]
-			#v(0.6em)
 			#grid(
 				columns: (1fr, 1fr), column-gutter: 16pt, align: (left, right),
-				if author != none { author } else { [] },
-				if due != none { [Due: #due] } else if date != none { date } else { [] },
+				if author != none { text(style: "italic", author) } else { [] },
+				text(style: "italic", if due != none { [Due: #due] } else if date != none { date } else { [] }),
 			)
 			#let extra = (if instructor != none { [Instructor: #instructor] }, institution, term,
 				if due != none and date != none { [Date: #date] }).filter(x => x != none)
@@ -267,8 +268,6 @@
 				v(0.3em)
 				align(center, text(size: 10pt, extra.join(h(1em))))
 			}
-			#v(0.4em)
-			#line(length: 100%, stroke: 0.5pt + black)
 		]
 	} else if show_title_block and title != none {
 		align(left)[
