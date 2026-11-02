@@ -59,6 +59,9 @@
 }
 
 // --- Logic & Set Theory ---
+#let Union = math.limits(sym.union.big)
+#let Inter = math.limits(sym.inter.big)
+
 /// Mapping
 #let to = sym.arrow.r
 
