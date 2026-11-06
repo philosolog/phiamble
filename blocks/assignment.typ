@@ -161,10 +161,11 @@ with_local_equations,
 	let show_qed = qed and not continuing
 	let content = if show_qed {
 		let qed_symbol = if proven { $square.filled$ } else { $square.stroked$ }
-		[
-			#body
-			#block(width: 100%, above: 0.35em)[#align(right)[#qed_symbol]]
-		]
+		let parts = body.fields().at("children", default: (body,))
+		while parts.len() > 0 and parts.last().func() in (parbreak, [ ].func()) {
+			let _ = parts.pop()
+		}
+		parts.join() + h(1fr) + qed_symbol
 	} else {
 		body
 	}

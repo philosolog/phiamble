@@ -276,11 +276,11 @@
 		let is_answer = title in ("Proof", "Solution")
 		block(
 			width: 100%, breakable: breakable,
-			above: if is_answer { 0.6em } else { 1.2em }, below: 0.6em,
+			above: 1.5em, below: 0.6em,
 		)[
 			#let label = {
 				set text(size: 12pt) if title in ("Problem", "Exercise")
-				set text(fill: black, weight: if is_answer { "regular" } else { "bold" },
+				set text(fill: colors.text, weight: if is_answer { "regular" } else { "bold" },
 					style: if is_answer { "italic" } else { "normal" })
 				title
 				if number != none { [ #number] }

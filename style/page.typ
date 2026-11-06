@@ -36,7 +36,7 @@
 	// Paragraphs
 	set par(
 		justify: is_academic_theme(active_theme),
-		leading: if is_academic_theme(active_theme) { 0.2em } else { 0.65em },
+		leading: if is_academic_theme(active_theme) { 0.4em } else { 0.65em },
 	)
 
 	// Tables
@@ -251,7 +251,7 @@
 	// ─── TITLE BLOCK — Official centered header ───
 	if show_title_block and title != none and is_academic_theme(active_theme) {
 		block(width: 100%, breakable: false, below: 1.2em,
-			stroke: 0.5pt + black, inset: (x: 10pt, y: 6pt))[
+			stroke: 0.5pt + colors.text, inset: (x: 10pt, y: 6pt))[
 			#if course != none { text(size: 10pt, weight: "bold", course) }
 			#block(width: 100%, above: 0.6em, below: 0.6em)[
 				#align(center, text(size: 14.4pt, title))
