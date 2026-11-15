@@ -20,14 +20,17 @@
 		$PP lr((#event mid(|) #given))$
 	}
 }
-/// Expectation with optional conditioning: `E($X$)` or `E($X$, given: $cal(F)$)`.
+/// Expectation without automatic delimiters: `E($X$)`; group explicitly with `E($(X + Y)$)`.
+/// Conditional expectations retain brackets: `E($X$, given: $cal(F)$)`.
 #let E(random-var, given: none) = if given == none {
-	$EE lr([#random-var])$
+	$EE #random-var$
 } else {
 	$EE lr([#random-var mid(|) #given])$
 }
 /// Expectation alias compatible with Typst math mode.
 #let Exp = E
+/// Exponential distribution: `Exponential(lambda)` in math mode.
+#let Exponential(rate) = $#op("Exp") lr((#rate))$
 /// Indicator of an event/set: `ind($A$)`.
 #let ind(event) = $upright(bold(1))_(#event)$
 /// Variance operator.
