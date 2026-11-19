@@ -9,8 +9,11 @@
 #let brace_label(s, width: 0pt) = {
 	let label = if type(s) == str {
 		text(s.replace(" ", "\u{A0}"))
-	} else {
+	} else if s.func() == math.equation {
 		s
+	} else {
+		// box/stack leave math layout; re-enter it so variants (scr, cal) and math font survive.
+		math.equation(math.script(s))
 	}
 
 	if width == auto {
@@ -25,18 +28,11 @@
 	let annotation = if note == none {
 		label
 	} else {
-		let note_content = if type(note) == str {
-			text(note.replace(" ", "\u{A0}"))
-		} else {
-			note
-		}
-
 		stack(
 			dir: ttb,
 			spacing: 0pt,
-			align: center,
-			[#label],
-			note_content,
+			align(center, brace_label(label, width: auto)),
+			align(center, brace_label(note, width: auto)),
 		)
 	}
 
