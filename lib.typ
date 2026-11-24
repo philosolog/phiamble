@@ -18,6 +18,10 @@
 #import "style/page.typ": setup_page, setup_theme
 #import "style/dates.typ": deadline
 
+// --- Templates ---
+// Vendored from arkheion 0.1.3 (MIT, see templates/arkheion/LICENSE).
+#import "templates/arkheion/arkheion.typ": arkheion, arkheion-appendices
+
 // --- Blocks ---
 #import "blocks/base.typ": *
 #import "blocks/theorem.typ": *
